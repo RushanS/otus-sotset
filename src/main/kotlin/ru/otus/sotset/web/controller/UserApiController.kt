@@ -13,31 +13,32 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import ru.otus.sotset.service.UserService
 import ru.otus.sotset.web.dto.User
-import ru.otus.sotset.web.dto.UserRegisterPost200Response
-import ru.otus.sotset.web.dto.UserRegisterPostRequest
+import ru.otus.sotset.web.dto.UserRegisterResponse
+import ru.otus.sotset.web.dto.UserRegisterRequest
 
 @RestController
 @Validated
 @RequestMapping("\${api.base-path:}")
-class UserApiController {
+class UserApiController(
+    private val userService: UserService
+) {
 
     @GetMapping("/user/get/{id}")
-    fun userGetIdGet(
+    fun getUserById(
         @Parameter(description = "Идентификатор пользователя", required = true) @PathVariable("id") id: String
-    ): ResponseEntity<User> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    ): User {
+        return userService.getUser(id)
     }
 
     @PostMapping("/user/register")
-    fun userRegisterPost(
-        @Parameter @Valid @RequestBody(required = false) userRegisterRequest: UserRegisterPostRequest?
-    ): ResponseEntity<UserRegisterPost200Response> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    fun registerUser(@Valid @RequestBody userRegisterRequest: UserRegisterRequest): UserRegisterResponse {
+        return userService.registerUser(userRegisterRequest)
     }
 
     @GetMapping("/user/search")
-    fun userSearchGet(
+    fun searchUser(
         @NotNull @Parameter(description = "Условие поиска по имени", required = true)
         @Valid @RequestParam(value = "first_name", required = true)
         firstName: String,

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.ResponseEntity
 import ru.otus.sotset.web.controller.DialogApiController
 import ru.otus.sotset.web.dto.DialogMessage
-import ru.otus.sotset.web.dto.DialogUserIdSendPostRequest
+import ru.otus.sotset.web.dto.SendMessageRequest
 
 class DialogApiTest {
 
@@ -33,8 +33,8 @@ class DialogApiTest {
     @Test
     fun dialogUserIdSendPostTest() {
         val userId: String = TODO()
-        val dialogUserIdSendPostRequest: DialogUserIdSendPostRequest? = TODO()
-        val response: ResponseEntity<Unit> = api.dialogUserIdSendPost(userId, dialogUserIdSendPostRequest)
+        val sendMessageRequest: SendMessageRequest? = TODO()
+        val response: ResponseEntity<Unit> = api.dialogUserIdSendPost(userId, sendMessageRequest)
 
         // TODO: test validations
     }

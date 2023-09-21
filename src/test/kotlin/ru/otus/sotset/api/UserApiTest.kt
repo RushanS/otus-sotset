@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.ResponseEntity
 import ru.otus.sotset.web.controller.UserApiController
 import ru.otus.sotset.web.dto.User
-import ru.otus.sotset.web.dto.UserRegisterPost200Response
-import ru.otus.sotset.web.dto.UserRegisterPostRequest
+import ru.otus.sotset.web.dto.UserRegisterResponse
+import ru.otus.sotset.web.dto.UserRegisterRequest
 
 class UserApiTest {
 
@@ -33,8 +33,8 @@ class UserApiTest {
      */
     @Test
     fun userRegisterPostTest() {
-        val userRegisterPostRequest: UserRegisterPostRequest? = TODO()
-        val response: ResponseEntity<UserRegisterPost200Response> = api.userRegisterPost(userRegisterPostRequest)
+        val userRegisterRequest: UserRegisterRequest? = TODO()
+        val response: ResponseEntity<UserRegisterResponse> = api.userRegisterPost(userRegisterRequest)
 
         // TODO: test validations
     }

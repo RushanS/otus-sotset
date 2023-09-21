@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController
 class FriendApiController {
 
     @PutMapping("/friend/delete/{user_id}")
-    fun friendDeleteUserIdPut(
+    fun deleteFriend(
         @Parameter(required = true) @PathVariable("user_id") userId: String
     ): ResponseEntity<Unit> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @PutMapping("/friend/set/{user_id}")
-    fun friendSetUserIdPut(
+    fun setFriend(
         @Parameter(required = true) @PathVariable("user_id") userId: String
     ): ResponseEntity<Unit> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)

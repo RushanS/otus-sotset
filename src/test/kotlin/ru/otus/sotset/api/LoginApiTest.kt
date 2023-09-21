@@ -3,8 +3,8 @@ package ru.otus.sotset.api
 import org.junit.jupiter.api.Test
 import org.springframework.http.ResponseEntity
 import ru.otus.sotset.web.controller.LoginApiController
-import ru.otus.sotset.web.dto.LoginPost200Response
-import ru.otus.sotset.web.dto.LoginPostRequest
+import ru.otus.sotset.web.dto.LoginResponse
+import ru.otus.sotset.web.dto.LoginRequest
 
 class LoginApiTest {
 
@@ -18,8 +18,8 @@ class LoginApiTest {
      */
     @Test
     fun loginPostTest() {
-        val loginPostRequest: LoginPostRequest? = TODO()
-        val response: ResponseEntity<LoginPost200Response> = api.loginPost(loginPostRequest)
+        val loginRequest: LoginRequest? = TODO()
+        val response: ResponseEntity<LoginResponse> = api.loginPost(loginRequest)
 
         // TODO: test validations
     }

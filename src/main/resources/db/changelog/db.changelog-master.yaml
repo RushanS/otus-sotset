@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: ddl/user.sql
+      relativeToChangelogFile: true

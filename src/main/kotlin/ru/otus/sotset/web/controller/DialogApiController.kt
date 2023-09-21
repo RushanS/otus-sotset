@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.otus.sotset.web.dto.DialogMessage
-import ru.otus.sotset.web.dto.DialogUserIdSendPostRequest
+import ru.otus.sotset.web.dto.SendMessageRequest
 
 @RestController
 @Validated
@@ -20,7 +20,7 @@ import ru.otus.sotset.web.dto.DialogUserIdSendPostRequest
 class DialogApiController {
 
     @GetMapping("/dialog/{user_id}/list")
-    fun dialogUserIdListGet(
+    fun getMessages(
         @Parameter(required = true)
         @PathVariable("user_id") userId: String
     ): ResponseEntity<List<DialogMessage>> {
@@ -28,9 +28,9 @@ class DialogApiController {
     }
 
     @PostMapping("/dialog/{user_id}/send")
-    fun dialogUserIdSendPost(
+    fun sendMessage(
         @Parameter(required = true) @PathVariable("user_id") userId: String,
-        @Parameter @Valid @RequestBody(required = false) dialogUserIdSendPostRequest: DialogUserIdSendPostRequest?
+        @Parameter @Valid @RequestBody(required = false) sendMessageRequest: SendMessageRequest?
     ): ResponseEntity<Unit> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }

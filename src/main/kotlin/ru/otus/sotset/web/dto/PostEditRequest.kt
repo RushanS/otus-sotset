@@ -3,7 +3,7 @@ package ru.otus.sotset.web.dto
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 
-data class PostUpdatePutRequest(
+data class PostEditRequest(
 
     @Schema(example = "1d535fd6-7521-4cb1-aa6d-031be7123c4d", required = true, description = "Идентификатор поста")
     @get:JsonProperty("id", required = true)

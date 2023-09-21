@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity
 import ru.otus.sotset.web.controller.PostApiController
 import ru.otus.sotset.web.dto.PageRequest
 import ru.otus.sotset.web.dto.Post
-import ru.otus.sotset.web.dto.PostCreatePostRequest
-import ru.otus.sotset.web.dto.PostUpdatePutRequest
+import ru.otus.sotset.web.dto.PostCreateRequest
+import ru.otus.sotset.web.dto.PostEditRequest
 
 class PostApiTest {
 
@@ -20,8 +20,8 @@ class PostApiTest {
      */
     @Test
     fun postCreatePostTest() {
-        val postCreatePostRequest: PostCreatePostRequest? = TODO()
-        val response: ResponseEntity<String> = api.postCreatePost(postCreatePostRequest)
+        val postCreateRequest: PostCreateRequest? = TODO()
+        val response: ResponseEntity<String> = api.postCreatePost(postCreateRequest)
 
         // TODO: test validations
     }
@@ -77,8 +77,8 @@ class PostApiTest {
      */
     @Test
     fun postUpdatePutTest() {
-        val postUpdatePutRequest: PostUpdatePutRequest? = TODO()
-        val response: ResponseEntity<Unit> = api.postUpdatePut(postUpdatePutRequest)
+        val postEditRequest: PostEditRequest? = TODO()
+        val response: ResponseEntity<Unit> = api.postUpdatePut(postEditRequest)
 
         // TODO: test validations
     }

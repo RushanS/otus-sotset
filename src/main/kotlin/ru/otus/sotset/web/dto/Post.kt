@@ -1,6 +1,5 @@
 package ru.otus.sotset.web.dto
 
-import java.util.Objects
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 

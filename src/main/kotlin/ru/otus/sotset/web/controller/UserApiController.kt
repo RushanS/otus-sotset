@@ -27,7 +27,8 @@ class UserApiController(
 
     @GetMapping("/user/get/{id}")
     fun getUserById(
-        @Parameter(description = "Идентификатор пользователя", required = true) @PathVariable("id") id: String
+        @Parameter(description = "Идентификатор пользователя", required = true)
+        @PathVariable("id") id: String
     ): User {
         return userService.getUser(id)
     }
@@ -37,15 +38,4 @@ class UserApiController(
         return userService.registerUser(userRegisterRequest)
     }
 
-    @GetMapping("/user/search")
-    fun searchUser(
-        @NotNull @Parameter(description = "Условие поиска по имени", required = true)
-        @Valid @RequestParam(value = "first_name", required = true)
-        firstName: String,
-        @NotNull @Parameter(description = "Условие поиска по фамилии", required = true)
-        @Valid @RequestParam(value = "last_name", required = true)
-        lastName: String
-    ): ResponseEntity<List<User>> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
-    }
 }

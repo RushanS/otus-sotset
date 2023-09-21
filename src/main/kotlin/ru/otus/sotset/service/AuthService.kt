@@ -26,23 +26,26 @@ class AuthService(
     val random = SecureRandom().asKotlinRandom()
 
     fun login(loginRequest: LoginRequest): LoginResponse {
-        val user = userRepository.find(loginRequest.id)
-            ?: throw LoginException("User with given id not found", 123)
+        val user = getUser(loginRequest.id)
         val passwordValid = passwordEncryptionService.check(loginRequest.password, user.password)
         if (!passwordValid) {
             throw LoginException("Invalid password", 124)
         }
-        val token = generateToken()
+        return LoginResponse(createToken())
+    }
+
+    private fun getUser(id: String) = userRepository.find(id)
+        ?: throw LoginException("User with given id not found", 123)
+
+
+    private fun createToken(): String {
+        val bytes = random.nextBytes(TOKEN_LENGTH)
+        val token = Base64.getEncoder().encodeToString(bytes)
         tokenCache[token] = LocalDateTime.now()
-        return LoginResponse(token)
+        return token
     }
 
     fun checkToken(token: String): Boolean = tokenCache.containsKey(token)
-
-    private fun generateToken(): String {
-        val bytes = random.nextBytes(TOKEN_LENGTH)
-        return Base64.getEncoder().encodeToString(bytes)
-    }
 
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.MINUTES)
     fun cleanExpiredTokens() {

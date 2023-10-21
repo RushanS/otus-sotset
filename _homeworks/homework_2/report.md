@@ -164,9 +164,9 @@ create index ix_first_second_names on user (first_name, second_name);
   </tr>
   <tr>
     <th class="tg-fymr">latency <br> (среднее, мс)</th>
-    <th class="tg-fymr">thoughtput  <br>(кол-во запросов  в сек)</th>
+    <th class="tg-fymr">thoughput  <br>(кол-во запросов  в сек)</th>
     <th class="tg-fymr">latency  <br>(среднее, ms)</th>
-    <th class="tg-fymr">thoughtput  <br>(кол-во запросов  в секунду)</th>
+    <th class="tg-fymr">thoughput  <br>(кол-во запросов  в секунду)</th>
   </tr>
 </thead>
 <tbody>

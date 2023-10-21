@@ -9,7 +9,7 @@
     - [10 потоков](#perf-test-before-10)
     - [100 потоков](#perf-test-before-100)
     - [1000 потоков](#perf-test-before-1000)
-4. [Создание индекса](#perf-test-after)
+4. [Создание индекса](#index-creation)
 5. [Нагрузочное тестирование после создания индекса](#perf-test-after)
     - [1 поток](#perf-test-after-1)
     - [10 потоков](#perf-test-after-10)

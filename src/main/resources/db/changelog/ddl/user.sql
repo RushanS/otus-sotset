@@ -14,3 +14,9 @@ CREATE TABLE user(
 )
 
 --rollback DROP TABLE user;
+
+
+--changeset rushan:create-index-names
+CREATE INDEX ix_first_second_names ON user (first_name, second_name);
+
+--rollback DROP INDEX ix_first_second_names ON user;

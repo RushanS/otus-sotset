@@ -44,6 +44,21 @@ const val SELECT_USER = """
     WHERE id = :id
 """
 
+const val SELECT_USERS_BY_NAMES_LIKE = """
+    SELECT
+        id,
+        first_name,
+        second_name,
+        age,
+        birthdate,
+        biography,
+        city,
+        password
+    FROM user
+    WHERE first_name LIKE :firstNamePart
+        AND second_name LIKE :secondNamePart
+"""
+
 @Component
 class UserRepositoryImpl(
     private val jdbcTemplate: NamedParameterJdbcTemplate
@@ -67,6 +82,16 @@ class UserRepositoryImpl(
     override fun find(id: String): User? {
         val users = jdbcTemplate.query(SELECT_USER, mapOf("id" to id), UserRowMapper)
         return if (users.isNotEmpty()) users.first() else null
+    }
+
+    override fun search(firstName: String, lastName: String): List<User> {
+        return jdbcTemplate.query(SELECT_USERS_BY_NAMES_LIKE,
+            mapOf(
+                "firstNamePart" to "$firstName%",
+                "secondNamePart" to "$lastName%"
+            ),
+            UserRowMapper
+        )
     }
 
     object UserRowMapper : RowMapper<User> {

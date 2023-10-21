@@ -2,9 +2,6 @@ package ru.otus.sotset.web.controller
 
 import io.swagger.v3.oas.annotations.Parameter
 import jakarta.validation.Valid
-import jakarta.validation.constraints.NotNull
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -38,4 +35,15 @@ class UserApiController(
         return userService.registerUser(userRegisterRequest)
     }
 
+    @GetMapping("/user/search")
+    fun searchUser(
+        @Parameter(description = "Условие поиска по имени", required = true)
+        @RequestParam(value = "first_name", required = true)
+        firstName: String,
+        @Parameter(description = "Условие поиска по фамилии", required = true)
+        @RequestParam(value = "last_name", required = true)
+        lastName: String
+    ): List<User> {
+        return userService.searchUser(firstName, lastName)
+    }
 }

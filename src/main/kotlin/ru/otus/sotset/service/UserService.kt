@@ -25,6 +25,12 @@ class UserService(
             ?: throw NotFoundException("User with given id not found")
     }
 
+    fun searchUser(firstName: String, lastName: String): List<User> {
+        return userRepository.search(firstName, lastName)
+            .sortedBy { it.id }
+            .map { it.toDto() }
+    }
+
     private fun UserRegisterRequest.getUserModel(): ru.otus.sotset.model.User =
         ru.otus.sotset.model.User(
             id = UUID.randomUUID().toString(),

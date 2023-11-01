@@ -7,12 +7,16 @@
     - [Настройка слейва](#async-repl-slave)
 2. [Переносим чтение на слейв](#read-slave)
 
+
 <a id="async-repl"></a>
 ## Настраиваем асинхронную репликацию
+
 Цель настроить окружение с помощью [docker-compose.yml](..%2F..%2F_docker%2Fdocker-compose.yml), чтобы одной кнопкой (или командой) можно было всё поднять без дополнительных действий и необходимости лезть внутрь контейнеров для их настройки.
+
 
 <a id="async-repl-master"></a>
 ### Настройка мастера
+
 Добавляем postgresql мастер-ноду в docker-compose.yml
 ```yaml
   postgres-master:
@@ -61,8 +65,10 @@ host    replication    replicator    0.0.0.0/0    trust
 ```
 Эта строка разрешает доступ пользователю replicator доступ к репликации с любых ip-адресов.
 
+
 <a id="async-repl-slave"></a>
 ### Настройка слейва
+
 Теперь добавим слейв-ноду:
 ```yaml
   postgres-slave-1:
@@ -101,6 +107,7 @@ host    replication    replicator    0.0.0.0/0    trust
 
 <a id="read-slave"></a>
 ## Переносим чтение на слейв
+
 Добавляем в файл конфигурации настройки для подключения к двум БД:
 ```yaml
 
@@ -122,10 +129,16 @@ host    replication    replicator    0.0.0.0/0    trust
 
 ```
 
-Добавляем в spring-конфигурацию приложения два разных dataSource и два jdbcTemplate (spring-бины с разными именами).
-По умолчанию (@Primary) будет использоваться подключение к мастеру.
-```kotlin
+В docker-compose так же переопределяем URL-ы для подключения для мастера и слейва, используя внутренние адреса докера:
+```yaml
+    environment:
+      - SPRING_MASTER_DATASOURCE_JDBC_URL=jdbc:postgresql://postgres-master:5432/sotset
+      - SPRING_SLAVE_DATASOURCE_JDBC_URL=jdbc:postgresql://postgres-slave-1:5432/sotset
+```
 
+Добавляем в spring-конфигурацию приложения два разных dataSource и два jdbcTemplate (spring-бины с разными именами).
+По умолчанию (@Primary) будет использоваться подключение к мастеру:
+```kotlin
     @Bean("masterDataSource")
     @Primary
     @ConfigurationProperties(prefix = "spring.master-datasource")
@@ -141,15 +154,12 @@ host    replication    replicator    0.0.0.0/0    trust
 
     @Bean("slaveJdbcTemplate")
     fun slaveJdbcTemplate() = NamedParameterJdbcTemplate(slaveDataSource())
-
 ```
 
-Потом в коде, который делает запросы, будем использовать два разных jdbcTemplate, slave для чтения, master для записи.
+Потом в коде, который делает запросы, будем использовать два разных jdbcTemplate, slave для чтения, master для записи:
 ```kotlin
-
     @Qualifier("masterJdbcTemplate") private val masterJdbcTemplate: NamedParameterJdbcTemplate,
     @Qualifier("slaveJdbcTemplate") private val slaveJdbcTemplate: NamedParameterJdbcTemplate,
-
 ```
 
 -----------------------

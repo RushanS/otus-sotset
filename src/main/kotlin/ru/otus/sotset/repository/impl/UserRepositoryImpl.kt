@@ -82,7 +82,7 @@ class UserRepositoryImpl(
         "password" to password,
     )
 
-    override fun find(id: String): User? {
+    override fun find(id: UUID): User? {
         val users = slaveJdbcTemplate.query(SELECT_USER, mapOf("id" to id), UserRowMapper)
         return if (users.isNotEmpty()) users.first() else null
     }

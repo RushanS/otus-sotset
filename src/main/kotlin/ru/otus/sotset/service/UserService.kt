@@ -21,7 +21,8 @@ class UserService(
     }
 
     fun getUser(id: String): User {
-        return userRepository.find(id)?.toDto()
+        val uuid = id.toUUID()
+        return userRepository.find(uuid)?.toDto()
             ?: throw NotFoundException("User with given id not found")
     }
 

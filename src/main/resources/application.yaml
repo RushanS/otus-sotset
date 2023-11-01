@@ -3,11 +3,11 @@ spring:
     name: otus-sotset
 
   datasource:
-    url: jdbc:mysql://localhost:3306/sotset
-    username: root
+    url: jdbc:postgresql://localhost:5432/sotset
+    username: postgres
     password: password
     hikari:
-      maximum-pool-size: 150
+      maximum-pool-size: 90
 
 management:
   endpoints:

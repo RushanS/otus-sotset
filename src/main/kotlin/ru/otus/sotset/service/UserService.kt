@@ -17,7 +17,7 @@ class UserService(
     fun registerUser(request: UserRegisterRequest): UserRegisterResponse {
         val user = request.getUserModel()
         userRepository.create(user)
-        return UserRegisterResponse(user.id)
+        return UserRegisterResponse(user.id.toString())
     }
 
     fun getUser(id: String): User {
@@ -33,7 +33,7 @@ class UserService(
 
     private fun UserRegisterRequest.getUserModel(): ru.otus.sotset.model.User =
         ru.otus.sotset.model.User(
-            id = UUID.randomUUID().toString(),
+            id = UUID.randomUUID(),
             firstName = this.firstName,
             secondName = this.secondName,
             age = this.age,
@@ -45,7 +45,7 @@ class UserService(
 
     private fun ru.otus.sotset.model.User.toDto() =
         User(
-            id = id,
+            id = id.toString(),
             firstName = firstName,
             secondName = secondName,
             age = age,

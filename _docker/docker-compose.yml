@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/sotset
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-master:5432/sotset
 
   db:
     image: mysql
@@ -22,6 +22,42 @@ services:
       MYSQL_ROOT_PASSWORD: password
     ports:
       - "3306:3306"
+
+  postgres-master:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sotset
+    command: |
+      postgres 
+      -c wal_level=replica 
+      -c max_wal_senders=10 
+      -c hba_file=/etc/postgresql/pg_hba.conf
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/master_pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - ./postgres/db-init:/docker-entrypoint-initdb.d/
+
+  postgres-slave-1:
+    image: postgres
+    restart: unless-stopped
+    user: postgres
+    depends_on:
+      - postgres-master
+    environment:
+      PGUSER: replicator
+      PGPASSWORD: replicator_password
+    command: |
+      bash -c "
+      pg_basebackup --pgdata=/var/lib/postgresql/data -R --host=postgres-master --port=5432 --no-password
+      chmod 0700 /var/lib/postgresql/data
+      postgres
+      "
+    ports:
+      - "5433:5432"
 
   prometheus:
     image: prom/prometheus

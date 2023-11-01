@@ -7,9 +7,10 @@ import ru.otus.sotset.model.User
 import ru.otus.sotset.repository.UserRepository
 import java.sql.ResultSet
 import java.time.LocalDate
+import java.util.UUID
 
 const val INSERT_USER = """
-    INSERT INTO user(
+    INSERT INTO users(
         id,
         first_name,
         second_name,
@@ -40,7 +41,7 @@ const val SELECT_USER = """
         biography,
         city,
         password
-    FROM user
+    FROM users
     WHERE id = :id
 """
 
@@ -54,7 +55,7 @@ const val SELECT_USERS_BY_NAMES_LIKE = """
         biography,
         city,
         password
-    FROM user
+    FROM users
     WHERE first_name LIKE :firstNamePart
         AND second_name LIKE :secondNamePart
 """
@@ -96,7 +97,7 @@ class UserRepositoryImpl(
 
     object UserRowMapper : RowMapper<User> {
         override fun mapRow(rs: ResultSet, rowNum: Int): User = User(
-            id = rs.getString("id"),
+            id = rs.getObject("id", UUID::class.java),
             firstName = rs.getString("first_name"),
             secondName = rs.getString("second_name"),
             age = rs.getInt("age"),

@@ -9,9 +9,11 @@ services:
     volumes:
       - ..:/code
     depends_on:
-      - db
+      - postgres-master
+      - postgres-slave-1
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-master:5432/sotset
+      - SPRING_MASTER_DATASOURCE_JDBC_URL=jdbc:postgresql://postgres-master:5432/sotset
+      - SPRING_SLAVE_DATASOURCE_JDBC_URL=jdbc:postgresql://postgres-slave-1:5432/sotset
 
   db:
     image: mysql

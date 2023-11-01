@@ -101,3 +101,56 @@ host    replication    replicator    0.0.0.0/0    trust
 
 <a id="read-slave"></a>
 ## Переносим чтение на слейв
+Добавляем в файл конфигурации настройки для подключения к двум БД:
+```yaml
+
+  master-datasource:
+    driver-class-name: org.postgresql.Driver
+    jdbc-url: jdbc:postgresql://localhost:5432/sotset
+    username: postgres
+    password: password
+    platform: postgresql
+    maximum-pool-size: 90
+
+  slave-datasource:
+    driver-class-name: org.postgresql.Driver
+    jdbc-url: jdbc:postgresql://localhost:5433/sotset
+    username: postgres
+    password: password
+    platform: postgresql
+    maximum-pool-size: 90
+
+```
+
+Добавляем в spring-конфигурацию приложения два разных dataSource и два jdbcTemplate (spring-бины с разными именами).
+По умолчанию (@Primary) будет использоваться подключение к мастеру.
+```kotlin
+
+    @Bean("masterDataSource")
+    @Primary
+    @ConfigurationProperties(prefix = "spring.master-datasource")
+    fun masterDataSource(): HikariDataSource = HikariDataSource()
+
+    @Bean("slaveDataSource")
+    @ConfigurationProperties(prefix = "spring.slave-datasource")
+    fun slaveDataSource(): HikariDataSource = HikariDataSource()
+
+    @Bean("masterJdbcTemplate")
+    @Primary
+    fun masterJdbcTemplate() = NamedParameterJdbcTemplate(masterDataSource())
+
+    @Bean("slaveJdbcTemplate")
+    fun slaveJdbcTemplate() = NamedParameterJdbcTemplate(slaveDataSource())
+
+```
+
+Потом в коде, который делает запросы, будем использовать два разных jdbcTemplate, slave для чтения, master для записи.
+```kotlin
+
+    @Qualifier("masterJdbcTemplate") private val masterJdbcTemplate: NamedParameterJdbcTemplate,
+    @Qualifier("slaveJdbcTemplate") private val slaveJdbcTemplate: NamedParameterJdbcTemplate,
+
+```
+
+-----------------------
+https://medium.com/@eremeykin/how-to-setup-single-primary-postgresql-replication-with-docker-compose-98c48f233bbf

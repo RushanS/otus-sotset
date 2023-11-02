@@ -218,5 +218,38 @@ synchronous_standby_names = 'FIRST 1 (pgslave1, pgslave2)'
 <a id="experiment"></a>
 ## Эксперимент по аварийной остановке master
 
+1. Запускаем нагрузку на запись на мастер с помощью jmeter. Нагружать будем http-запросами на бэкенд на ручку регистрации.
+2. С помощью docker rm --force убиваем postgres-master.
+3. Останавливаем нагрузку.
+
+Итоги:
+- Jmeter показывает, что успешно выполнилось 159 496 запросов, потом посыпались ошибки.
+- На синхронном slave_1 в таблице users 159 498 записей.
+- На асинхронном slave_2 в таблице users 159 496 записей.
+
+Синхронная реплика впереди на 2 записи.
+Получается, в момент остановки мастера, он успел отправить две транзакции на синхронную реплику. Эти две транзакции успешно применились на синхронной реплике. Но мастер получить подтверждение от синхронной реплики не успел, и не успел закоммитить свою транзакцию, и отправить данные на асинхронную реплику. Поэтому синхронная реплика впереди, а jmeter видит, что успешно выполнилось 159 496 запросов.
+
+Результат в jmeter:
+<img alt="jmeter-result.png" src="img/jmeter-result.png"/>
+
+Кол-во users в slave_1 (синхронный):
+
+<img alt="slave1-users.png" src="img/slave1-users.png" width="300"/>
+
+Кол-во users в slave_2 (асинхронный):
+
+<img alt="slave2-users.png" src="img/slave2-users.png" width="300"/>
+
+
+Промоутим slave_1 до мастера:
+```postgresql
+    select * from pg_promote()
+```
+Обновляем pg_hba.conf как описано в начале. Рестартуем slave_1.
+
+В slave_2 обновляем primary_coninfo, меняем postgres-master на postgres-slave-1.
+
+Всё, slave_2 подключена к slave_1, которая теперь новый мастер. Кол-во записей в slave_2 догнало slave_1, лаг рассосался, теперь они равны.
+
 -----------------------
-https://medium.com/@eremeykin/how-to-setup-single-primary-postgresql-replication-with-docker-compose-98c48f233bbf

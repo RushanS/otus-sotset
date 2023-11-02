@@ -56,10 +56,28 @@ services:
       bash -c "
       pg_basebackup --pgdata=/var/lib/postgresql/data -R --host=postgres-master --port=5432 --no-password
       chmod 0700 /var/lib/postgresql/data
-      postgres
+      postgres -c cluster_name=pgslave1
       "
     ports:
       - "5433:5432"
+
+  postgres-slave-2:
+    image: postgres
+    restart: unless-stopped
+    user: postgres
+    depends_on:
+      - postgres-master
+    environment:
+      PGUSER: replicator
+      PGPASSWORD: replicator_password
+    command: |
+      bash -c "
+      pg_basebackup --pgdata=/var/lib/postgresql/data -R --host=postgres-master --port=5432 --no-password
+      chmod 0700 /var/lib/postgresql/data
+      postgres -c cluster_name=pgslave2
+      "
+    ports:
+      - "5434:5432"
 
   prometheus:
     image: prom/prometheus

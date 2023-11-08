@@ -1,17 +1,33 @@
 package ru.otus.sotset.config
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies
+import com.zaxxer.hikari.HikariDataSource
+import io.swagger.v3.oas.models.Components
+import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.security.SecurityScheme
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-
-import io.swagger.v3.oas.models.OpenAPI
-import io.swagger.v3.oas.models.info.Info
-import io.swagger.v3.oas.models.Components
-import io.swagger.v3.oas.models.security.SecurityScheme
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import org.springframework.context.annotation.Primary
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 
 @Configuration
 class AppConfiguration {
+
+    @Bean("masterDataSource")
+    @Primary
+    @ConfigurationProperties(prefix = "spring.master-datasource")
+    fun masterDataSource(): HikariDataSource = HikariDataSource()
+
+    @Bean("slaveDataSource")
+    @ConfigurationProperties(prefix = "spring.slave-datasource")
+    fun slaveDataSource(): HikariDataSource = HikariDataSource()
+
+    @Bean("masterJdbcTemplate")
+    @Primary
+    fun masterJdbcTemplate() = NamedParameterJdbcTemplate(masterDataSource())
+
+    @Bean("slaveJdbcTemplate")
+    fun slaveJdbcTemplate() = NamedParameterJdbcTemplate(slaveDataSource())
 
     @Bean
     fun apiInfo(): OpenAPI {

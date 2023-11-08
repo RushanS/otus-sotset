@@ -1,9 +1,10 @@
 package ru.otus.sotset.model
 
 import java.time.LocalDate
+import java.util.UUID
 
 data class User(
-    val id: String,
+    val id: UUID,
     val firstName: String?,
     val secondName: String?,
     val age: Int?,

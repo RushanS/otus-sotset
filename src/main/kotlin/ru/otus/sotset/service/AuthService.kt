@@ -34,7 +34,7 @@ class AuthService(
         return LoginResponse(createToken())
     }
 
-    private fun getUser(id: String) = userRepository.find(id)
+    private fun getUser(id: String) = userRepository.find(id.toUUID())
         ?: throw LoginException("User with given id not found", 123)
 
 

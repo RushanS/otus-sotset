@@ -1,13 +1,13 @@
-package ru.otus.sotset.service
+package ru.otus.sotset.service.auth
 
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
-const val SALT_LENGTH = 16
-const val ITERATION_COUNT = 65536
-const val KEY_LENGTH = 128
+private const val SALT_LENGTH = 16
+private const val ITERATION_COUNT = 65536
+private const val KEY_LENGTH = 128
 
 @Service
 class PasswordEncryptionService {

@@ -26,6 +26,7 @@ dependencies {
     implementation("jakarta.annotation:jakarta.annotation-api:2.1.0")
     implementation("org.liquibase:liquibase-core")
     implementation("io.micrometer:micrometer-registry-prometheus")
+    implementation("com.auth0:java-jwt:4.4.0")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

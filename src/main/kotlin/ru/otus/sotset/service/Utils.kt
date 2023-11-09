@@ -3,7 +3,7 @@ package ru.otus.sotset.service
 import ru.otus.sotset.BadUserInputException
 import java.util.*
 
-fun String.toUUID(): UUID {
+fun String?.toUUID(): UUID {
     return try {
         UUID.fromString(this)
     } catch (e: Exception) {

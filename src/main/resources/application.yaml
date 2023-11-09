@@ -42,3 +42,10 @@ management:
 
 server:
   port: 8080
+
+otus-sotset:
+  auth:
+    jwt:
+      secret: "*****"
+      issuer: "otus-sotset"
+      token-ttl-seconds: 3600

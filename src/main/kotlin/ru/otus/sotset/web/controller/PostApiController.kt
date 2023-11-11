@@ -2,8 +2,6 @@ package ru.otus.sotset.web.controller
 
 import io.swagger.v3.oas.annotations.Parameter
 import jakarta.validation.Valid
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -12,6 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import ru.otus.sotset.service.post.PostCrudService
+import ru.otus.sotset.service.post.PostFeedService
 import ru.otus.sotset.web.dto.PageRequest
 import ru.otus.sotset.web.dto.Post
 import ru.otus.sotset.web.dto.PostCreateRequest
@@ -20,40 +20,33 @@ import ru.otus.sotset.web.dto.PostEditRequest
 @RestController
 @Validated
 @RequestMapping("\${api.base-path:}")
-class PostApiController {
+class PostApiController(
+    val postCrudService: PostCrudService,
+    val postFeedService: PostFeedService
+) {
 
     @PostMapping("/post/create")
-    fun createPost(
-        @Parameter @Valid @RequestBody(required = false) createRequest: PostCreateRequest?
-    ): ResponseEntity<String> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    fun createPost(@Valid @RequestBody createRequest: PostCreateRequest): String {
+        return postCrudService.createPost(createRequest)
     }
 
     @PutMapping("/post/delete/{id}")
-    fun deletePost(
-        @Parameter(required = true) @PathVariable("id") id: String
-    ): ResponseEntity<Unit> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    fun deletePost(@Parameter(required = true) @PathVariable id: String) {
+        return postCrudService.deletePost(id)
     }
 
     @GetMapping("/post/feed")
-    fun getPosts(
-        @Valid pageRequest: PageRequest
-    ): ResponseEntity<List<Post>> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    fun postsFeed(@Valid pageRequest: PageRequest): List<Post> {
+        return postFeedService.getFeed(pageRequest)
     }
 
     @GetMapping("/post/get/{id}")
-    fun getPost(
-        @Parameter(required = true) @PathVariable("id") id: String
-    ): ResponseEntity<Post> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    fun getPost(@Parameter(required = true) @PathVariable id: String): Post {
+        return postCrudService.getPost(id)
     }
 
     @PutMapping("/post/update")
-    fun editPost(
-        @Parameter @Valid @RequestBody(required = false) postUpdateRequest: PostEditRequest?
-    ): ResponseEntity<Unit> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    fun editPost(@Valid @RequestBody postEditRequest: PostEditRequest) {
+        return postCrudService.editPost(postEditRequest)
     }
 }

@@ -61,6 +61,22 @@ const val SELECT_USERS_BY_NAMES_LIKE = """
         AND second_name LIKE :secondNamePart
 """
 
+const val SELECT_ALL_USERS = """
+    SELECT
+        id,
+        first_name,
+        second_name,
+        age,
+        birthdate,
+        biography,
+        city,
+        password
+    FROM users
+    ORDER BY id
+    OFFSET :offset
+    LIMIT :limit
+"""
+
 @Component
 class UserRepositoryImpl(
     @Qualifier("masterJdbcTemplate") private val masterJdbcTemplate: NamedParameterJdbcTemplate,
@@ -95,6 +111,13 @@ class UserRepositoryImpl(
             ),
             UserRowMapper
         )
+    }
+
+    override fun findAll(offset: Int, limit: Int): List<User> {
+        return slaveJdbcTemplate.query(SELECT_ALL_USERS, mapOf(
+            "offset" to offset,
+            "limit" to limit
+        ), UserRowMapper)
     }
 
     object UserRowMapper : RowMapper<User> {

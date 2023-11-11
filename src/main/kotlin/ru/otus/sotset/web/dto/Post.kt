@@ -3,9 +3,6 @@ package ru.otus.sotset.web.dto
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Пост пользователя
- */
 data class Post(
 
     @Schema(example = "1d535fd6-7521-4cb1-aa6d-031be7123c4d", description = "Идентификатор поста")

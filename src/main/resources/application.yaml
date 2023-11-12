@@ -20,9 +20,8 @@ spring:
 
   data:
     redis:
-      host: localhost
-      port: 6379
       client-type: lettuce
+      url: redis://localhost:6379
 
 management:
   endpoints:

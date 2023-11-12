@@ -11,3 +11,5 @@ class LoginException(msg: String, code: Int, val requestId: String? = null) : Ap
 class BadUserInputException(msg: String, code: Int = HttpStatus.BAD_REQUEST.value()): ApiException(msg, code)
 
 class AuthException: ApiException("Not authorized request", HttpStatus.UNAUTHORIZED.value())
+
+class ForbiddenException(msg: String = "Illegal access to resource"): ApiException(msg, HttpStatus.FORBIDDEN.value())

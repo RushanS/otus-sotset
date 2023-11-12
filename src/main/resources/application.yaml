@@ -18,6 +18,12 @@ spring:
     platform: postgresql
     maximum-pool-size: 90
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      client-type: lettuce
+
 management:
   endpoints:
     enabled-by-default: false

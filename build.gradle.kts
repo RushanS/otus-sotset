@@ -20,6 +20,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("jakarta.validation:jakarta.validation-api")
@@ -27,6 +28,7 @@ dependencies {
     implementation("org.liquibase:liquibase-core")
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("com.auth0:java-jwt:4.4.0")
+    implementation("io.lettuce:lettuce-core:6.2.6.RELEASE")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

@@ -1,6 +1,7 @@
 package ru.otus.sotset.service.post
 
 import org.springframework.stereotype.Service
+import ru.otus.sotset.ForbiddenException
 import ru.otus.sotset.NotFoundException
 import ru.otus.sotset.model.Post
 import ru.otus.sotset.repository.PostRepository
@@ -26,6 +27,7 @@ class PostCrudService(
 
     fun deletePost(id: String) {
         val post = findPost(id)
+        checkOwner(post)
         postRepository.delete(id.toUUID())
         postHandler.deleted(post)
     }
@@ -36,6 +38,7 @@ class PostCrudService(
 
     fun editPost(request: PostEditRequest) {
         val post = findPost(request.id)
+        checkOwner(post)
         val edited = post.copy(text = request.text)
         postRepository.update(edited)
         postHandler.edited(edited)
@@ -52,4 +55,9 @@ class PostCrudService(
         authorUserId = authorId.toString()
     )
 
+    private fun checkOwner(post: Post) {
+        if (post.authorId != currentUser.user.id) {
+            throw ForbiddenException()
+        }
+    }
 }

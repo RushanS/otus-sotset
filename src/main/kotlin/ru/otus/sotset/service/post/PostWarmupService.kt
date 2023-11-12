@@ -1,9 +1,11 @@
-package ru.otus.sotset.service.post.cache
+package ru.otus.sotset.service.post
 
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import ru.otus.sotset.repository.PostRepository
 import ru.otus.sotset.repository.UserRepository
+import ru.otus.sotset.service.post.cache.CACHE_LIMIT
+import ru.otus.sotset.service.post.cache.PostFeedCache
 
 const val BATCH_SIZE = 100
 

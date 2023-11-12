@@ -3,6 +3,7 @@ package ru.otus.sotset.service
 import org.springframework.stereotype.Service
 import ru.otus.sotset.NotFoundException
 import ru.otus.sotset.repository.UserRepository
+import ru.otus.sotset.service.auth.PasswordEncryptionService
 import ru.otus.sotset.web.dto.User
 import ru.otus.sotset.web.dto.UserRegisterResponse
 import ru.otus.sotset.web.dto.UserRegisterRequest

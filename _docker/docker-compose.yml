@@ -11,19 +11,11 @@ services:
     depends_on:
       - postgres-master
       - postgres-slave-1
+      - redis
     environment:
       - SPRING_MASTER_DATASOURCE_JDBC_URL=jdbc:postgresql://postgres-master:5432/sotset
       - SPRING_SLAVE_DATASOURCE_JDBC_URL=jdbc:postgresql://postgres-slave-1:5432/sotset
-
-  db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    environment:
-      MYSQL_DATABASE: sotset
-      MYSQL_ROOT_PASSWORD: password
-    ports:
-      - "3306:3306"
+      - SPRING_DATA_REDIS_URL=redis://redis:6379
 
   postgres-master:
     image: postgres
@@ -61,23 +53,10 @@ services:
     ports:
       - "5433:5432"
 
-  postgres-slave-2:
-    image: postgres
-    restart: unless-stopped
-    user: postgres
-    depends_on:
-      - postgres-master
-    environment:
-      PGUSER: replicator
-      PGPASSWORD: replicator_password
-    command: |
-      bash -c "
-      pg_basebackup --pgdata=/var/lib/postgresql/data -R --host=postgres-master --port=5432 --no-password
-      chmod 0700 /var/lib/postgresql/data
-      postgres -c cluster_name=pgslave2
-      "
+  redis:
+    image: redis
     ports:
-      - "5434:5432"
+      - "6379:6379"
 
   prometheus:
     image: prom/prometheus

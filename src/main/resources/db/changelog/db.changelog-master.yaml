@@ -2,3 +2,9 @@ databaseChangeLog:
   - include:
       file: ddl/user.sql
       relativeToChangelogFile: true
+  - include:
+      file: ddl/friend.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ddl/post.sql
+      relativeToChangelogFile: true
